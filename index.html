@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Объявления</title>
+    <!-- предостережет от лишнего GET запроса на адрес /favicon.ico -->
+    <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+</head>
+
+<body>
+<h1>Добро пожаловать</h1>
+<div id="ads"></div>
+<form action="javascript:postAd()">
+    <label for="ad">Введите объявление:</label><br>
+    <input id="ad" name="ad" type="text"><br>
+    <input type="submit" value="Добавить">
+</form>
+</body>
+
+<script>
+    function postAd() {
+        const ad = document.getElementById("ad").value
+        fetch("http://10.112.89.17:5000/ads", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ad: ad})
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Ошибка при добавлении объявления')
+                }
+                return response.json()
+            })
+            .then(data => {
+                document.getElementById("ads").innerHTML += `<p>${data.ad}</p>`
+            })
+            .catch(error => {
+                alert(`Произошла ошибка ${error}, попробуйте еще раз`)
+            })
+    }
+
+    function getAds() {
+        fetch("http://10.112.89.17:5000/ads")
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("ads").innerHTML = data.map(ad => `<p>${ad.ad}</p>`).join('')
+            })
+            .catch(error => {
+                alert(`Произошла ошибка ${error}, попробуйте еще раз`)
+            })
+    }
+
+    getAds()
+</script>
+
+</html>
