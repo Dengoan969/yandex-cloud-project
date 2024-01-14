@@ -21,7 +21,7 @@
 <script>
     function postAd() {
         const ad = document.getElementById("ad").value
-        fetch("http://10.112.89.17:5000/ads", {
+        fetch("http://158.160.143.71:80/api/ads", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -43,7 +43,7 @@
     }
 
     function getAds() {
-        fetch("http://10.112.89.17:5000/ads")
+        fetch("http://158.160.143.71:80/api/ads")
             .then(response => response.json())
             .then(data => {
                 document.getElementById("ads").innerHTML = data.map(ad => `<p>${ad.ad}</p>`).join('')

@@ -17,7 +17,7 @@ def get_config():
     database = os.getenv("database")
     if endpoint is None or database is None:
         raise AssertionError("Нужно указать обе переменные окружения")
-    credentials = ydb.iam.ServiceAccountCredentials()
+    credentials = ydb.iam.ServiceAccountCredentials.from_file('serverless-shortener.sa')
     return ydb.DriverConfig(endpoint, database, credentials=credentials)
 
 
@@ -68,7 +68,7 @@ def post_ad():
     params = {'$id': hashlib.sha256(ad.encode('utf8')).hexdigest()[:6], '$ad': ad}
     execute(config, query, params)
 
-    return 'Created', 201
+    return jsonify({'message': 'Created', 'ad': ad}), 201
 
 
 if __name__ == '__main__':
