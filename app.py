@@ -41,7 +41,7 @@ def execute(config, query, params):
         )
 
 
-@app.route('/ads', methods=['GET'])
+@app.route('/api/ads', methods=['GET'])
 def get_ads():
     config = get_config()
     query = "SELECT * FROM ads;"
@@ -52,7 +52,7 @@ def get_ads():
     return jsonify([{'id': row.id, 'ad': row.ad} for row in result_set[0].rows])
 
 
-@app.route('/ads', methods=['POST'])
+@app.route('/api/ads', methods=['POST'])
 def post_ad():
     ad = request.json.get('ad')
     if not ad:
